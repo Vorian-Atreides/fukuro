@@ -50,6 +50,6 @@ private class InstanceEtcd[M[_]: Async](service: KVService)(implicit ec: Executi
   def getById(id: InstanceId, serviceId: ServiceId, versionId: VersionId, envId: EnvironmentId, locationId: LocationId): M[Either[Error, Instance]] =
     etcd.getById(key(id, serviceId, versionId, envId, locationId))
 
-  def getByLocationId(serviceId: ServiceId, versionId: VersionId, envId: EnvironmentId, locationId: LocationId): M[Either[Error, List[Instance]]] =
+  def getByLocationId(serviceId: ServiceId, versionId: VersionId, envId: EnvironmentId, locationId: LocationId): M[List[Instance]] =
     etcd.list(s"$rootPrefix/${serviceId.value}/versions/${versionId.value}/environments/${envId.value}/locations/${locationId.value}/instances/")
 }

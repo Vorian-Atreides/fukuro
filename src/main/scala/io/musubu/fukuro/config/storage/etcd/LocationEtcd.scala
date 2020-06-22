@@ -49,7 +49,7 @@ private class LocationEtcd[M[_]: Async](service: KVService)(implicit ec: Executi
   def getById(id: LocationId): M[Either[Error, Location]] =
     etcd.getById(key(id))
 
-  def list: M[Either[Error, List[Location]]] =
+  def list: M[List[Location]] =
     etcd.list(rootPrefix)
 
 }

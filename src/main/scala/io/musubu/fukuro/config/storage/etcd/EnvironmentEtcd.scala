@@ -50,6 +50,6 @@ private class EnvironmentEtcd[M[_]: Async](service: KVService)(implicit ec: Exec
   def getById(id: EnvironmentId): M[Either[Error, Environment]] =
     etcd.getById(key(id))
 
-  def list: M[Either[Error, List[Environment]]] =
+  def list: M[List[Environment]]=
     etcd.list(rootPrefix)
 }

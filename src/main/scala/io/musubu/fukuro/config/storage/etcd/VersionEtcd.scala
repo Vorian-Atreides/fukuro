@@ -50,6 +50,6 @@ private class VersionEtcd[M[_]: Async](service: KVService)(implicit ec: Executio
   def getById(id: VersionId, serviceId: ServiceId): M[Either[Error, Version]] =
     etcd.getById(key(id, serviceId))
 
-  def getByServiceId(serviceId: ServiceId): M[Either[Error, List[Version]]] =
+  def getByServiceId(serviceId: ServiceId): M[List[Version]] =
     etcd.list(s"$rootPrefix/${serviceId.value}/versions")
 }

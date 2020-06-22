@@ -50,6 +50,6 @@ private class ServiceEtcd[M[_]: Async](service: KVService)(implicit ec: Executio
   def getById(id: ServiceId): M[Either[Error, Service]] =
     etcd.getById(key(id))
 
-  def list: M[Either[Error, List[Service]]] =
+  def list: M[List[Service]] =
     etcd.list(rootPrefix)
 }

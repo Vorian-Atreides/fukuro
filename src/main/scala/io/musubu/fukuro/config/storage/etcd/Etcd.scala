@@ -42,8 +42,8 @@ private class Etcd[M[_]: Async, T](service: KVService)(implicit ec: ExecutionCon
         }
     }
 
-  def list(prefix: String)(implicit reader: Read[Either[Error, T]]): M[Either[Error, List[T]]] =
-    Async[M].async[Either[Error, List[T]]] { cb =>
+  def list(prefix: String)(implicit reader: Read[Either[Error, T]]): M[List[T]] =
+    Async[M].async[List[T]] { cb =>
       service.getRange(prefix).
         map(_.kvs.toList.map(kv => reader.read(kv.value))).
         map(_.sequence).
@@ -51,8 +51,8 @@ private class Etcd[M[_]: Async, T](service: KVService)(implicit ec: ExecutionCon
           case Failure(err) =>
             val internalError = InternalError("unable to list the resources", err)
             cb(Either.left(internalError))
-          case Success(Left(err: InternalError)) => cb(Either.left(err))
-          case Success(result) => cb(Either.right(result))
+          case Success(Left(err)) => cb(Either.left(err))
+          case Success(Right(locations)) => cb(Either.right(locations))
         }
     }
 }
