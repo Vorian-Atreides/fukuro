@@ -3,6 +3,7 @@ package io.musubu.fukuro.config
 import akka.actor.typed.ActorSystem
 import cats.effect.IO
 import io.musubu.fukuro.config.storage.etcd.LocationEtcd
+import io.musubu.fukuro.eow.implicits._
 import org.etcd4s
 import org.etcd4s.Etcd4sClient
 import org.etcd4s.services.KVService
@@ -21,7 +22,7 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     val app = for {
-      _ <- IO (Etcd4sClient.newClient(etcd4s.Etcd4sClientConfig("127.0.0.1", 32769))).bracket { client =>
+      _ <- IO (Etcd4sClient.newClient(etcd4s.Etcd4sClientConfig("127.0.0.1", 2379))).bracket { client =>
         for {
           system <- runSystem(client)
           _ <- IO{ StdIn.readLine() }
